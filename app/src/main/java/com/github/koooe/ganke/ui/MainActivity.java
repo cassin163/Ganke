@@ -41,11 +41,17 @@ public class MainActivity extends ToolbarActivity {
 
         fm = getSupportFragmentManager();
 
+        for (int i = 0; i < Api.categories.length; i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(Api.categories[i] + i));
+        }
+
         mainAdapter = new MainAdapter(fm, Api.categories.length);
         viewPager.setAdapter(mainAdapter);
 
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+//        tabLayout.setupWithViewPager(viewPager);
     }
 
     static class MainAdapter extends FragmentPagerAdapter {
