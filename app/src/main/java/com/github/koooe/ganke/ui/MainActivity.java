@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.github.koooe.ganke.R;
@@ -19,7 +19,7 @@ public class MainActivity extends ToolbarActivity {
     TabLayout tabLayout;
 
     @Bind(R.id.viewPager)
-    private ViewPager viewPager;
+    ViewPager viewPager;
 
     FragmentManager fm;
     private MainFragmentPagerAdapter mainAdapter;
@@ -41,7 +41,7 @@ public class MainActivity extends ToolbarActivity {
         fm = getSupportFragmentManager();
 
         for (int i = 0; i < Api.categories.length; i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(Api.categories[i] + i));
+            tabLayout.addTab(tabLayout.newTab().setText(Api.categories[i]));
         }
 
         mainAdapter = new MainFragmentPagerAdapter(fm, Api.categories.length);
@@ -52,7 +52,7 @@ public class MainActivity extends ToolbarActivity {
 
     }
 
-    static class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+    static class MainFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
         int size;
 
