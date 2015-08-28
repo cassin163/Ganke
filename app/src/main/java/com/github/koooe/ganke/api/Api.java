@@ -31,7 +31,6 @@ public class Api {
         }
 
         String url = String.format(GANK_DATA, category, page);
-        DebugLog.d(url);
         StringRequest request = new StringRequest(url, listener, errorListener);
         GankeApp.getRequestQueue().add(request);
 

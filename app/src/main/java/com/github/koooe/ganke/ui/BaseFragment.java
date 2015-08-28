@@ -1,11 +1,13 @@
 package com.github.koooe.ganke.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -18,8 +20,11 @@ import com.github.koooe.ganke.util.DebugLog;
 import com.google.gson.Gson;
 import com.markmao.pulltorefresh.widget.XListView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,7 +32,6 @@ import ganke.adapter.BaseAdapterHelper;
 import ganke.adapter.QuickAdapter;
 
 public class BaseFragment extends Fragment implements XListView.IXListViewListener {
-
     private static final String ARG_CATEGORY = "category";
     public QuickAdapter<DayData> adapter;
     int currentPage;
@@ -35,7 +39,6 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
     XListView mListView;
     private String category;
     private List<DayData> dayDatas = new ArrayList<>();
-
     public BaseFragment() {
         // Required empty public constructor
     }
@@ -71,6 +74,7 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
         mListView.setAutoLoadEnable(true);
         mListView.setXListViewListener(this);
         mListView.autoRefresh();
+        mListView.setRefreshTime(getTime());
         adapter = new QuickAdapter<DayData>(getActivity(), R.layout.listitem_base, dayDatas) {
             @Override
             protected void convert(BaseAdapterHelper helper, DayData item, int position) {
@@ -79,10 +83,18 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                 helper.setText(R.id.tv_meta, meta);
             }
         };
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(getActivity().getApplicationContext(),DataView.class);
+                String url=adapter.getItem(position).getUrl();
+                intent.putExtra(DataView.EXTRA_URL,url);
+                startActivity(intent);
+            }
+        });
         mListView.setAdapter(adapter);
 
     }
-
 
     @Override
     public void onRefresh() {
@@ -96,7 +108,6 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                         if (!baseResponse.isError()) {
                             adapter.replaceAll(baseResponse.getResults());
                         }
-
                         mListView.stopRefresh();
                     }
 
@@ -132,4 +143,8 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                     }
                 });
     }
+    private String getTime(){
+        return new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA).format(new Date());
+    }
+
 }
