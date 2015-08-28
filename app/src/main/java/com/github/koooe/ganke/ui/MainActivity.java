@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.github.koooe.ganke.R;
 import com.github.koooe.ganke.api.Api;
+import com.github.koooe.ganke.util.DebugLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,7 +23,6 @@ public class MainActivity extends ToolbarActivity {
     ViewPager viewPager;
 
     FragmentManager fm;
-    private MainFragmentPagerAdapter mainAdapter;
 
     @Override
     protected int setLayoutResId() {
@@ -44,32 +44,32 @@ public class MainActivity extends ToolbarActivity {
             tabLayout.addTab(tabLayout.newTab().setText(Api.categories[i]));
         }
 
-        mainAdapter = new MainFragmentPagerAdapter(fm, Api.categories.length);
+        MainFragmentPagerAdapter mainAdapter = new MainFragmentPagerAdapter(fm, Api.categories);
         viewPager.setAdapter(mainAdapter);
+        viewPager.setOffscreenPageLimit(Api.categories.length - 1);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
     }
 
-    static class MainFragmentPagerAdapter extends FragmentStatePagerAdapter {
+    static class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        int size;
+        String[] categories;
 
-        public MainFragmentPagerAdapter(FragmentManager fm, int size) {
+        public MainFragmentPagerAdapter(FragmentManager fm, String[] categories) {
             super(fm);
-            this.size = size;
+            this.categories = categories;
         }
 
         @Override
         public Fragment getItem(int position) {
-
-            return BaseFragment.newInstance(Api.categories[position]);
+            DebugLog.d(categories[position]);
+            return BaseFragment.newInstance(categories[position]);
         }
 
         @Override
         public int getCount() {
-            return size;
+            return categories.length;
         }
     }
 }

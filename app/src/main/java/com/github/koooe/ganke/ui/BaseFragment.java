@@ -1,6 +1,7 @@
 package com.github.koooe.ganke.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,9 +20,11 @@ import com.github.koooe.ganke.util.DebugLog;
 import com.google.gson.Gson;
 import com.markmao.pulltorefresh.widget.XListView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import android.content.Intent;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +36,7 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
     private static final String ARG_CATEGORY = "category";
     public QuickAdapter<DayData> adapter;
     int currentPage;
+
     @Bind(R.id.list_view)
     XListView mListView;
     private String category;
@@ -84,9 +88,9 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String urls=adapter.getItem(position).getUrl();
-                Intent intent=new Intent(getActivity().getApplicationContext(),Mwebview.class);
-                intent.putExtra(Mwebview.EXCAU_URL,urls);
+                String urls = adapter.getItem(position).getUrl();
+                Intent intent = new Intent(getActivity().getApplicationContext(), WebActivity.class);
+                intent.putExtra(WebActivity.EXCAU_URL, urls);
                 startActivity(intent);
             }
         });
@@ -96,18 +100,23 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
 
     @Override
     public void onRefresh() {
-        currentPage = 1;
-        Api.getData(category, currentPage,
+        final int requestPage = 1;
+        Api.getData(category, requestPage,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Gson gson = new Gson();
                         BaseResponse baseResponse = gson.fromJson(response, BaseResponse.class);
                         if (!baseResponse.isError()) {
-                            adapter.replaceAll(baseResponse.getResults());
+                            if (baseResponse.getResults().size() > 0) {
+                                adapter.replaceAll(baseResponse.getResults());
+                                currentPage = requestPage;
+                                // 可能是disable状态
+                                mListView.setPullLoadEnable(true);
+                            }
                         }
 
-                        mListView.stopRefresh();
+                        onFinish();
                     }
 
                 }, new Response.ErrorListener() {
@@ -115,6 +124,7 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                     public void onErrorResponse(VolleyError error) {
                         DebugLog.e(error.toString());
                         Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        onFinish();
                     }
                 });
 
@@ -122,24 +132,40 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
 
     @Override
     public void onLoadMore() {
-        Api.getData(category, ++currentPage,
+        final int requestPage = currentPage + 1;
+        Api.getData(category, requestPage,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Gson gson = new Gson();
                         BaseResponse baseResponse = gson.fromJson(response, BaseResponse.class);
                         if (!baseResponse.isError()) {
-                            adapter.addAll(baseResponse.getResults());
+                            if (baseResponse.getResults().size() > 0) {
+                                adapter.addAll(baseResponse.getResults());
+                                currentPage = requestPage;
+                            } else {  // 没有更多
+                                mListView.setPullLoadEnable(false);
+                            }
                         }
-
-                        mListView.stopLoadMore();
+                        onFinish();
                     }
 
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        onFinish();
                     }
                 });
+    }
+
+    private void onFinish() {
+        mListView.stopRefresh();
+        mListView.stopLoadMore();
+        mListView.setRefreshTime(getTime());
+    }
+
+    private String getTime() {
+        return new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA).format(new Date());
     }
 }

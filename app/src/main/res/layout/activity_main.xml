@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         tabLayout:tabMode="scrollable"
         android:background="@color/primary"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        android:fillViewport="false" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
