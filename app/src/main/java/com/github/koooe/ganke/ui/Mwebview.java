@@ -1,6 +1,7 @@
 package com.github.koooe.ganke.ui;
 
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.github.koooe.ganke.R;
@@ -34,6 +35,10 @@ public class Mwebview extends ToolbarActivity {
         try{
             localview.setWebViewClient(new WebviewClient());
             localview.getSettings().setJavaScriptEnabled(true);
+            localview.getSettings().setSupportZoom(true);
+            localview.getSettings().setLoadWithOverviewMode(true);
+            localview.getSettings().setAppCacheEnabled(true);
+            localview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
             if(url != null){
                 localview.loadUrl(url);
             }else{
