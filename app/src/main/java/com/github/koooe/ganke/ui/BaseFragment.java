@@ -80,7 +80,6 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
             }
         };
         mListView.setAdapter(adapter);
-
     }
 
 
