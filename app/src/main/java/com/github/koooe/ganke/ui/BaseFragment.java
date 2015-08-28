@@ -88,7 +88,9 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String urls = adapter.getItem(position).getUrl();
+                DebugLog.e("position:" +position);
+                DebugLog.e("id:" +id);
+                String urls = adapter.getItem(position-1).getUrl();
                 Intent intent = new Intent(getActivity().getApplicationContext(), WebActivity.class);
                 intent.putExtra(WebActivity.EXCAU_URL, urls);
                 startActivity(intent);
