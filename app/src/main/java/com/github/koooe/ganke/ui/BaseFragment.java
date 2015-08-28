@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -20,6 +21,7 @@ import com.markmao.pulltorefresh.widget.XListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.content.Intent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,6 +81,15 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                 helper.setText(R.id.tv_meta, meta);
             }
         };
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String urls=adapter.getItem(position).getUrl();
+                Intent intent=new Intent(getActivity().getApplicationContext(),Mwebview.class);
+                intent.putExtra(Mwebview.EXCAU_URL,urls);
+                startActivity(intent);
+            }
+        });
         mListView.setAdapter(adapter);
     }
 
