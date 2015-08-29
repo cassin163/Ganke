@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.github.koooe.ganke.R;
 import com.github.koooe.ganke.bean.DayData;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class FuliAdapter extends RecyclerView.Adapter<FuliAdapter.FuliViewHolder
 
     LayoutInflater inflater;
     OnItemClickListener onItemClickListener;
+    ImageLoader imageLoader = ImageLoader.getInstance();
 
 
     public FuliAdapter(@NonNull Context context, @NonNull List<DayData> datas) {
@@ -50,6 +52,8 @@ public class FuliAdapter extends RecyclerView.Adapter<FuliAdapter.FuliViewHolder
                 }
             }
         });
+
+        imageLoader.displayImage(dayData.getUrl(), holder.imageView);
         holder.textView.setText(dayData.getWho());
     }
 
