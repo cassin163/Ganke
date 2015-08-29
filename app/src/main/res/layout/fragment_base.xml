@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.github.koooe.ganke.ui.BaseFragment">
+    tools:context="com.github.koooe.ganke.ui.BaseListFragment">
 
     <com.markmao.pulltorefresh.widget.XListView
         android:id="@+id/list_view"
