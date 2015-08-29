@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import com.github.koooe.ganke.R;
 import com.github.koooe.ganke.api.Api;
@@ -51,6 +52,29 @@ public class MainActivity extends ToolbarActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleClickToExit()) {
+            super.onBackPressed();
+        }
+    }
+
+    long exitTime = 0;
+
+    private boolean doubleClickToExit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            String applicationName = getResources().getString(
+                    R.string.app_name);
+            String msg = "再按一次返回键退出" + applicationName;
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+            return false;
+        } else {
+           return true;
+        }
+    }
+
 
     static class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
