@@ -1,6 +1,7 @@
 package com.github.koooe.ganke.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,7 +22,6 @@ import com.markmao.pulltorefresh.widget.XListView;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.content.Intent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -86,8 +86,8 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String urls=adapter.getItem(position).getUrl();
-                Intent intent=new Intent(getActivity().getApplicationContext(),Mwebview.class);
-                intent.putExtra(Mwebview.EXCAU_URL,urls);
+                Intent intent=new Intent(getActivity().getApplicationContext(),WebActivity.class);
+                intent.putExtra(WebActivity.EXCAU_URL,urls);
                 startActivity(intent);
             }
         });
