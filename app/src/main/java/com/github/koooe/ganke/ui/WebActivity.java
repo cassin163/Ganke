@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import android.view.Menu;
+import android.view.View;
+
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.github.koooe.ganke.R;
 
@@ -21,8 +25,11 @@ import butterknife.ButterKnife;
  * DataView
  */
 public class WebActivity extends ToolbarActivity {
-    public static final String EXCAU_URL = "url";
+    public static final String EXTRA_URL = "url";
     public static String url;
+
+    @Bind((R.id.progressBar))
+    ProgressBar progressBar;
 
     @Bind(R.id.webView)
     WebView webView;
@@ -49,7 +56,7 @@ public class WebActivity extends ToolbarActivity {
 
     public void parseIntent(Intent intent) {
         if (getIntent() != null) {
-            url = getIntent().getStringExtra(EXCAU_URL);
+            url = getIntent().getStringExtra(EXTRA_URL);
         }
     }
 
@@ -62,9 +69,22 @@ public class WebActivity extends ToolbarActivity {
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(true);
         webView.setWebChromeClient(new WebChromeClient() {
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                }else{
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                setTitle(title);
             }
         });
 
@@ -112,4 +132,10 @@ public class WebActivity extends ToolbarActivity {
             webView.destroy();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }

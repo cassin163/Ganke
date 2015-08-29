@@ -92,7 +92,7 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                 DebugLog.e("id:" +id);
                 String urls = adapter.getItem(position-1).getUrl();
                 Intent intent = new Intent(getActivity().getApplicationContext(), WebActivity.class);
-                intent.putExtra(WebActivity.EXCAU_URL, urls);
+                intent.putExtra(WebActivity.EXTRA_URL, urls);
                 startActivity(intent);
             }
         });
