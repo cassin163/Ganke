@@ -3,9 +3,12 @@ package com.github.koooe.ganke.util;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+<<<<<<< HEAD
 /**
  * 设置snackbar颜色
  */
+=======
+>>>>>>> origin/master
 public class ColoredSnackbar {
   
     private static final int red = 0xfff44336;
