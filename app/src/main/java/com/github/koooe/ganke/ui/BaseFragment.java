@@ -31,6 +31,7 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
     private static final String ARG_CATEGORY = "category";
     public QuickAdapter<DayData> adapter;
     int currentPage;
+
     @Bind(R.id.list_view)
     XListView mListView;
     private String category;
@@ -105,6 +106,7 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                     public void onErrorResponse(VolleyError error) {
                         DebugLog.e(error.toString());
                         Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        mListView.stopRefresh();
                     }
                 });
 
@@ -129,6 +131,8 @@ public class BaseFragment extends Fragment implements XListView.IXListViewListen
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        mListView.stopLoadMore();
+
                     }
                 });
     }
