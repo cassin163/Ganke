@@ -38,5 +38,5 @@ dependencies {
     compile project(':CommonAdapter')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-
+    compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
 }

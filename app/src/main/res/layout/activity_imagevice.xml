@@ -3,8 +3,9 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/view_toolbar"/>
-    <ImageView
-        android:id="@+id/iamgeview"
+
+    <it.sephiroth.android.library.imagezoom.ImageViewTouch
+        android:id="@+id/iview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

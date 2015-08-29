@@ -97,8 +97,8 @@ public class FuliFragment extends BaseFragment {
         fuliAdapter.setOnItemClickListener(new FuliAdapter.OnItemClickListener() {
             @Override
             public void onClick(DayData data) {
-                Intent intent = new Intent(getActivity(), WebActivity.class);
-                intent.putExtra(WebActivity.EXTRA_URL, data.getUrl());
+                Intent intent = new Intent(getActivity(), FuliActivity.class);
+                intent.putExtra(FuliActivity.IMAGE_URL, data.getUrl());
                 startActivity(intent);
             }
         });

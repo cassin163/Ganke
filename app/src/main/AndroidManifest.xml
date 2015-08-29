@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
        <activity android:name=".ui.WebActivity" />
+        <activity android:name=".ui.FuliActivity"/>
     </application>
 
 </manifest>
