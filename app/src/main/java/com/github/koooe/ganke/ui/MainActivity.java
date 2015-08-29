@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.github.koooe.ganke.R;
 import com.github.koooe.ganke.api.Api;
 import com.github.koooe.ganke.util.ColoredSnackbar;
-import com.github.koooe.ganke.util.DebugLog;
 import com.github.koooe.ganke.util.Once;
 
 import butterknife.Bind;
@@ -98,8 +97,10 @@ public class MainActivity extends ToolbarActivity {
 
         @Override
         public Fragment getItem(int position) {
-            DebugLog.d(categories[position]);
-            return BaseFragment.newInstance(categories[position]);
+            if (position == 4) {
+                return FuliFragment.newInstance(categories[position]);
+            }
+            return BaseListFragment.newInstance(categories[position]);
         }
 
         @Override
