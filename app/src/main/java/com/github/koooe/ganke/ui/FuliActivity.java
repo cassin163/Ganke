@@ -10,7 +10,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
-import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
 /**
  * Created by finally_xiaojian@163.com on 2015/8/30.
@@ -28,7 +27,7 @@ public class FuliActivity extends ToolbarActivity  {
     public FuliActivity(){}
     @Override
     protected int setLayoutResId() {
-        return R.layout.activity_imagevice;
+        return R.layout.activity_fuli;
     }
 
     @Override
@@ -36,7 +35,7 @@ public class FuliActivity extends ToolbarActivity  {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         parseIntent(getIntent());
-        imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_IF_BIGGER);
+        imageView.setDisplayType(ImageViewTouch.DisplayType.FIT_IF_BIGGER);
         if(TextUtils.isEmpty(url)){
             finish();
         }
